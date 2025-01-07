@@ -2,28 +2,25 @@ import pandas as pd
 import numpy as np
 
 # Read the dataset
-data = pd.read_csv("Lab Data\^BVSP.csv");
+data = pd.read_csv(r"Lab Data\^BSESN.csv")
+
+data['Date'] = pd.to_datetime(data['Date'], format='%Y-%m-%d')
+data.sort_values(by='Date', ascending=True, inplace=True)
+
+closeValues = data['Close'].dropna().reset_index(drop=True)
 
 # Create a table to store the close values, differences and symbols
-table = np.zeros((len(data),3),dtype=float)
+table = np.zeros((len(closeValues),3),dtype=float)
 
 # Fill the table with close values
-for i in range (0, len(data)):
-    table[i][0] = data['Close'][i]
+for i in range (0, len(closeValues)):
+    table[i][0] = closeValues[i]
 
 # Calculate the differences
 for i in range (1, len(table)):
     table[i][1] = table[i][0] - table[i-1][0]
 
-max_val,min_val=table[1][1],table[1][1]
-#print(max_val,min_val)
-
-# Calculate min and max value
-for i in range (2, len(table)):
-    if table[i][1] > max_val:
-        max_val = table[i][1]
-    if table[i][1] < min_val:
-        min_val = table[i][1]
+max_val, min_val = np.max(table[:,1]), np.min(table[:,1])
 print("max value : ",max_val,"\nmin value : ",min_val)
 
 interval = (max_val - min_val) / 12
