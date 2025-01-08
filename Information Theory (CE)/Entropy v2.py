@@ -6,7 +6,7 @@ import numpy as np
 # Read the dataset
 data = pd.read_csv(r"Lab Data\^BSESN.csv")
 
-data['Date'] = pd.to_datetime(data['Date'], format='%Y-%m-%d')
+data['Date'] = pd.to_datetime(data['Date'], format='mixed')
 data.sort_values(by='Date', ascending=True, inplace=True)
 
 closeValues = data['Close'].dropna().reset_index(drop=True)
